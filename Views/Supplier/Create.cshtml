@@ -1,0 +1,89 @@
+﻿@model UrosPetrusovic.Models.Supplier
+
+@{
+    ViewData["Title"] = "Dodaj dobavljača";
+}
+
+<div class="container mt-5 pt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+                <div class="card-header bg-dark py-3 px-4">
+                    <h4 class="text-white mb-0 fw-bold">
+                        <i class="bi bi-building-plus me-2 text-warning"></i>Novi Dobavljač
+                    </h4>
+                </div>
+
+                <div class="card-body p-4 p-md-5">
+                    <form asp-action="Create" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="form-floating mb-4">
+                            <input asp-for="Name" class="form-control border-0 bg-light rounded-3" placeholder="Ime firme" />
+                            <label asp-for="Name">Ime firme/dobavljača</label>
+                            <span asp-validation-for="Name" class="text-danger small"></span>
+                        </div>
+
+                        <div class="form-floating mb-4">
+                            <input asp-for="ContactEmail" class="form-control border-0 bg-light rounded-3" placeholder="email@primer.com" />
+                            <label asp-for="ContactEmail">Email adresa za kontakt</label>
+                            <span asp-validation-for="ContactEmail" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4 fw-bold me-md-2">
+                                Odustani
+                            </a>
+                            <button type="submit" class="btn btn-warning text-dark rounded-pill px-5 fw-bold shadow-sm">
+                                Sačuvaj dobavljača
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card-footer bg-light py-3 border-0">
+                    <p class="small text-muted text-center mb-0">
+                        <i class="bi bi-info-circle me-1"></i> Svi podaci se automatski arhiviraju u bazu partnera.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .form-floating > .form-control:focus {
+        background-color: #fff !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        border: 1px solid #ffaa00 !important;
+    }
+
+    .card {
+        animation: slideUp 0.4s ease-out;
+    }
+
+    @@keyframes slideUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .btn-warning {
+        background-color: #ffaa00;
+        border: none;
+        transition: all 0.3s;
+    }
+
+    .btn-warning:hover {
+        background-color: #e69900;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(255, 170, 0, 0.3);
+    }
+</style>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

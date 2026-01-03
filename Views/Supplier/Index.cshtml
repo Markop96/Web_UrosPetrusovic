@@ -1,0 +1,92 @@
+﻿@model IEnumerable<UrosPetrusovic.Models.Supplier>
+
+@{
+    ViewData["Title"] = "Dobavljači";
+}
+
+<div class="container mt-5 pt-5">
+    <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+        <div class="card-header bg-dark py-3 d-flex justify-content-between align-items-center px-4">
+            <h3 class="text-white mb-0 fw-bold">🏭 Upravljanje Dobavljačima</h3>
+            <a class="btn btn-warning fw-bold rounded-pill px-4 shadow-sm" asp-action="Create">
+                <i class="bi bi-plus-circle me-2"></i>Dodaj dobavljača
+            </a>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0 align-middle">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="ps-4 py-3 text-uppercase small fw-bold text-secondary">Ime firme</th>
+                            <th class="py-3 text-uppercase small fw-bold text-secondary">Email adresa</th>
+                            <th class="pe-4 py-3 text-uppercase small fw-bold text-secondary text-end">Akcije</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var supplier in Model)
+                        {
+                            <tr class="transition-hover">
+                                <td class="ps-4 py-3 fw-bold text-dark">
+                                    <div class="d-flex align-items-center">
+                                        <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                            <span class="text-primary fw-bold">@supplier.Name[0]</span>
+                                        </div>
+                                        @supplier.Name
+                                    </div>
+                                </td>
+                                <td class="py-3">
+                                    <a href="mailto:@supplier.ContactEmail" class="text-decoration-none text-muted">
+                                        <i class="bi bi-envelope me-2"></i>@supplier.ContactEmail
+                                    </a>
+                                </td>
+                                <td class="pe-4 py-3 text-end">
+                                    <div class="btn-group shadow-sm rounded-pill overflow-hidden">
+                                        <a class="btn btn-white border-end px-3" asp-action="Edit" asp-route-id="@supplier.Id" title="Izmeni">
+                                            <i class="bi bi-pencil-square text-warning"></i>
+                                        </a>
+                                        <a class="btn btn-white px-3" asp-action="Delete" asp-route-id="@supplier.Id" title="Obriši">
+                                            <i class="bi bi-trash3-fill text-danger"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer bg-white py-3 border-0 text-center">
+            <small class="text-muted">Ukupno registrovanih dobavljača: @Model.Count()</small>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: rgba(0,0,0,0.02);
+        transform: scale(1.005);
+        transition: all 0.2s ease-in-out;
+    }
+
+    .btn-white {
+        background-color: #fff;
+        transition: background-color 0.2s;
+    }
+
+    .btn-white:hover {
+        background-color: #f8f9fa;
+    }
+
+    .card {
+        animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @@keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>

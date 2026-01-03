@@ -1,0 +1,107 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Prijava";
+}
+
+<div class="container" style="padding-top: 50px; padding-bottom: 100px;">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+                <div class="card-header bg-primary py-4 text-center border-0">
+                    <h2 class="text-white fw-bold mb-0">Dobrodošli nazad</h2>
+                    <p class="text-white-50 small mb-0">Prijavite se na svoj nalog</p>
+                </div>
+
+                <div class="card-body p-4 p-md-5">
+                    <form id="account" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger small mb-3" role="alert"></div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Email" class="form-control border-0 bg-light" autocomplete="username" aria-required="true" placeholder="ime@primer.com" />
+                            <label asp-for="Input.Email" class="text-muted small">Email adresa</label>
+                            <span asp-validation-for="Input.Email" class="text-danger small"></span>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Password" class="form-control border-0 bg-light" autocomplete="current-password" aria-required="true" placeholder="lozinka" />
+                            <label asp-for="Input.Password" class="text-muted small">Lozinka</label>
+                            <span asp-validation-for="Input.Password" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input shadow-none" asp-for="Input.RememberMe" />
+                                <label asp-for="Input.RememberMe" class="form-check-label small text-muted">
+                                    Zapamti me
+                                </label>
+                            </div>
+ 
+                        </div>
+
+                        <button id="login-submit" type="submit" class="w-100 btn btn-primary btn-lg rounded-pill fw-bold shadow-sm py-3 mb-4">
+                            PRIJAVI SE
+                        </button>
+
+                        <div class="text-center pt-2">
+                            <p class="small text-muted mb-1">Nemate nalog?</p>
+                            <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="text-primary fw-bold text-decoration-none">
+                                Otvorite novi nalog ovde
+                            </a>
+                        </div>
+                    </form>
+
+                    @if ((Model.ExternalLogins?.Count ?? 0) > 0)
+                    {
+                        <div class="position-relative my-4">
+                            <hr class="text-muted">
+                            <span class="position-absolute top-50 start-50 translate-middle bg-white px-3 small text-muted">ili</span>
+                        </div>
+
+                        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                            <div class="d-grid gap-2">
+                                @foreach (var provider in Model.ExternalLogins!)
+                                {
+                                    <button type="submit" class="btn btn-outline-dark rounded-pill py-2 small fw-bold" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
+                                        Prijavi se putem: @provider.DisplayName
+                                    </button>
+                                }
+                            </div>
+                        </form>
+                    }
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <a id="resend-confirmation" asp-page="./ResendEmailConfirmation" class="text-muted small text-decoration-none">
+                    Niste dobili email za potvrdu? Pošaljite ponovo.
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa; 
+    }
+
+    .form-control:focus {
+        background-color: #fff !important;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15) !important;
+        border: 1px solid #0d6efd !important;
+    }
+
+    .card {
+        transition: transform 0.3s ease;
+    }
+
+    .form-floating > .form-control {
+        border: 1px solid transparent;
+    }
+</style>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

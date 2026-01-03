@@ -1,0 +1,180 @@
+﻿@model UrosPetrusovic.Models.Item
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show container mt-3" role="alert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@{
+    ViewData["Title"] = "Detalji - " + Model.Name;
+
+    bool isAvailable =
+        Model.Catalog?.ValidUntil != null &&
+        Model.Catalog.ValidUntil.Value.Date > DateTime.Today;
+
+    string availabilityText = "";
+    if (Model.Catalog?.ValidUntil != null)
+    {
+        if (isAvailable)
+        {
+            availabilityText = "Proizvod je dostupan do " +
+                               Model.Catalog.ValidUntil.Value.ToString("dd.MM.yyyy");
+        }
+        else
+        {
+            availabilityText = "Proizvod više nije dostupan od " +
+                               Model.Catalog.ValidUntil.Value.ToString("dd.MM.yyyy");
+        }
+    }
+}
+
+<div class="container mt-5">
+    <div class="card shadow border-0 overflow-hidden">
+        <div class="row g-0">
+
+            <div class="col-md-5 bg-light d-flex align-items-center justify-content-center p-4">
+                @if (Model.Slika != null)
+                {
+                    <img src="data:image/png;base64,@Convert.ToBase64String(Model.Slika)"
+                         class="img-fluid" alt="@Model.Name">
+                }
+                else
+                {
+                    <div class="text-center">
+                        <i style="font-size: 5rem;" class="text-muted d-block">📦</i>
+                        <span class="text-muted">Slika nije dostupna</span>
+                    </div>
+                }
+            </div>
+
+            <div class="col-md-7">
+                <div class="card-body p-5">
+
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb mb-0">
+                                <li class="breadcrumb-item">
+                                    <a asp-action="Index">Katalog</a>
+                                </li>
+                                <li class="breadcrumb-item active">
+                                    @Model.Catalog?.Name
+                                </li>
+                            </ol>
+                        </nav>
+
+                        @if (User.IsInRole("ADMIN"))
+                        {
+                            <div class="d-flex gap-2">
+                                <a asp-action="Edit" asp-route-id="@Model.Id"
+                                   class="btn btn-outline-primary btn-sm">
+                                    📝 Izmeni
+                                </a>
+                                <form asp-action="Delete" asp-route-id="@Model.Id"
+                                      method="post"
+                                      onsubmit="return confirm('Da li ste sigurni da želite da obrišete ovaj artikal?');">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                                        🗑️ Obriši
+                                    </button>
+                                </form>
+                            </div>
+                        }
+                    </div>
+
+                    <h1 class="display-6 fw-bold">@Model.Name</h1>
+
+                    @if (!string.IsNullOrEmpty(availabilityText))
+                    {
+                        <span class="badge @(isAvailable ? "bg-success" : "bg-danger") mb-3">
+                            @availabilityText
+                        </span>
+                    }
+
+                    <p>@Model.Description</p>
+                    <p class="text-muted">
+                        MPN: <strong>@Model.ManufacturerPartNumber</strong>
+                    </p>
+
+                    <hr />
+
+                    <div class="row mb-4">
+                        <div class="col-6">
+                            <small class="text-muted d-block">Cena</small>
+                            <h2 class="text-success fw-bold">
+                                @Model.Price.ToString("N2") RSD
+                            </h2>
+                        </div>
+                        <div class="col-6">
+                            <small class="text-muted d-block">Lead Time</small>
+                            <h4 class="fw-bold">@Model.LeadTime dana</h4>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <h5 class="fw-bold">Informacije o dobavljaču</h5>
+                        <p class="mb-0">
+                            <strong>Ime:</strong> @Model.Supplier?.Name
+                        </p>
+                        <p>
+                            <strong>Email:</strong> @Model.Supplier?.ContactEmail
+                        </p>
+                    </div>
+
+                    <div class="mt-5">
+                        <form asp-controller="Orders"
+                              asp-action="AddToCart"
+                              method="post"
+                              class="row g-3 align-items-center">
+
+                            <input type="hidden" name="itemId" value="@Model.Id" />
+
+                            <div class="col-auto">
+                                <div class="input-group shadow-sm" style="max-width: 150px;">
+                                    <button type="button" class="btn btn-outline-secondary"
+                                            onclick="this.parentNode.querySelector('input').stepDown()">
+                                        -
+                                    </button>
+                                    <input type="number"
+                                           name="quantity"
+                                           class="form-control text-center fw-bold border-secondary"
+                                           value="1" min="1"
+                                    @(isAvailable ? "" : "disabled") />
+                                    <button type="button" class="btn btn-outline-secondary"
+                                            onclick="this.parentNode.querySelector('input').stepUp()">
+                                        +
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="col-auto d-flex gap-2">
+                                @if (isAvailable)
+                                {
+                                    <button type="submit"
+                                            class="btn btn-warning px-4 shadow-sm text-white fw-bold">
+                                        🛒 Dodaj u korpu
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button type="button"
+                                            class="btn btn-secondary px-4 shadow-sm"
+                                            disabled>
+                                        ⛔ Nije dostupno
+                                    </button>
+                                }
+
+                                <a asp-action="Index"
+                                   class="btn btn-outline-secondary px-4 shadow-sm">
+                                    Nazad na listu
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

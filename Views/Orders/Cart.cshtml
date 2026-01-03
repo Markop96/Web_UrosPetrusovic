@@ -1,0 +1,149 @@
+﻿@model IEnumerable<UrosPetrusovic.Controllers.CartItem>
+
+@{
+    ViewData["Title"] = "Vaša korpa";
+}
+
+<div class="container" style="padding-top: 100px; padding-bottom: 100px;">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow-sm p-4 rounded-4 border-0">
+                <h2 class="mb-4 fw-bold">🛒 Sadržaj korpe</h2>
+
+                @if (Model != null && Model.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table align-middle">
+                            <thead class="text-muted small">
+                                <tr>
+                                    <th>Proizvod</th>
+                                    <th class="text-center">Cena</th>
+                                    <th class="text-center" style="width: 150px;">Količina</th>
+                                    <th class="text-end">Ukupno</th>
+                                    <th class="text-center"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            <span class="fw-bold d-block">@item.Name</span>
+                                        </td>
+                                        <td class="text-center">@item.Price.ToString("N2") RSD</td>
+                                        <td class="text-center">
+                                            <form asp-controller="Orders" asp-action="UpdateCartQuantity" method="post" class="d-flex align-items-center justify-content-center">
+                                                <input type="hidden" name="itemId" value="@item.ItemId" />
+                                                <div class="input-group input-group-sm shadow-sm rounded-pill overflow-hidden" style="width: 110px;">
+                                                    <input type="number" name="quantity" value="@item.Quantity"
+                                                           class="form-control border-0 text-center" min="1" />
+                                                    <button type="submit" class="btn btn-primary border-0">
+                                                        <small>💾</small>
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </td>
+                                        <td class="text-end fw-bold">@((item.Price * item.Quantity).ToString("N2")) RSD</td>
+                                        <td class="text-center">
+                                            <form asp-controller="Orders" asp-action="RemoveFromCart" method="post">
+                                                <input type="hidden" name="itemId" value="@item.ItemId" />
+                                                <button type="submit" class="btn btn-sm text-danger border-0 bg-transparent">
+                                                    <span style="font-size: 1.2rem;">&times;</span>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center py-5">
+                        <div class="display-1 text-muted mb-3">🛒</div>
+                        <h4>Vaša korpa je trenutno prazna.</h4>
+                        <a asp-controller="Items" asp-action="Index" class="btn btn-primary mt-3 rounded-pill px-4">Nazad na kupovinu</a>
+                    </div>
+                }
+            </div>
+        </div>
+
+        @if (Model != null && Model.Any())
+        {
+            <div class="col-md-4">
+                <div class="card shadow-sm p-4 rounded-4 bg-light border-0 sticky-top" style="top: 100px;">
+                    <h4 class="fw-bold">Rezime</h4>
+                    <hr />
+                    <div class="d-flex justify-content-between mb-3">
+                        <span class="text-muted">Ukupno za uplatu:</span>
+                        <h4 class="text-primary fw-bold">@Model.Sum(x => x.Price * x.Quantity).ToString("N2") RSD</h4>
+                    </div>
+
+                    <button type="button" class="btn btn-warning w-100 py-3 rounded-pill fw-bold text-white shadow mb-3"
+                            data-bs-toggle="modal" data-bs-target="#checkoutModal">
+                        POTVRDI PORUDŽBINU
+                    </button>
+
+                    <a asp-controller="Orders" asp-action="MyOrders" class="btn btn-outline-secondary w-100 py-2 rounded-pill mb-2">
+                        📋 Moje porudžbine
+                    </a>
+
+                    <a asp-controller="Items" asp-action="Index" class="btn btn-link w-100 text-decoration-none text-muted small text-center">
+                        Nastavi kupovinu
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow">
+            <div class="modal-header border-0 pb-0 pt-4 px-4">
+                <h5 class="modal-title fw-bold" id="checkoutModalLabel">Podaci za isporuku</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form asp-controller="Orders" asp-action="Checkout" method="post">
+
+                    <div class="mb-3">
+                        <label class="form-label small text-muted fw-bold">Ime i prezime primaoca</label>
+                        <input type="text" name="FullName" class="form-control rounded-pill" placeholder="npr. Marko Marković" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small text-muted fw-bold">Kontakt telefon</label>
+                        <input type="tel" name="Phone" class="form-control rounded-pill" placeholder="npr. 0641234567" required />
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label small text-muted fw-bold">Adresa za isporuku</label>
+                        <textarea name="Address" class="form-control rounded-4" rows="3" placeholder="Ulica, broj, grad..." required></textarea>
+                    </div>
+
+                    <div class="p-3 bg-light rounded-4 mb-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fw-bold">Ukupan iznos:</span>
+                            <span class="h4 fw-bold text-primary mb-0">@Model.Sum(x => x.Price * x.Quantity).ToString("N2") RSD</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-warning w-100 py-3 rounded-pill fw-bold text-white shadow">
+                        ZAVRŠI KUPOVINU
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed start-0 m-4" style="z-index: 1000; bottom: 20px;">
+    <a asp-controller="Orders" asp-action="MyOrders"
+       class="btn btn-primary shadow rounded-pill px-3 py-2 d-flex align-items-center border-0"
+       style="opacity: 0.95;">
+        <span class="me-2">📦</span>
+        <small class="fw-bold">Moje porudžbine</small>
+    </a>
+</div>

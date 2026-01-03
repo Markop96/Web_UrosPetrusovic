@@ -1,0 +1,96 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Registracija";
+}
+
+<div class="container" style="padding-top: 50px; padding-bottom: 100px;">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+                <div class="card-header bg-success py-4 text-center border-0">
+                    <h2 class="text-white fw-bold mb-0">Kreiraj nalog</h2>
+                    <p class="text-white-50 small mb-0">Pridružite se našoj zajednici</p>
+                </div>
+
+                <div class="card-body p-4 p-md-5">
+                    <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger small mb-3" role="alert"></div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Email" class="form-control border-0 bg-light" autocomplete="username" aria-required="true" placeholder="ime@primer.com" />
+                            <label asp-for="Input.Email" class="text-muted small">Email adresa</label>
+                            <span asp-validation-for="Input.Email" class="text-danger small"></span>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Password" class="form-control border-0 bg-light" autocomplete="new-password" aria-required="true" placeholder="lozinka" />
+                            <label asp-for="Input.Password" class="text-muted small">Lozinka</label>
+                            <span asp-validation-for="Input.Password" class="text-danger small"></span>
+                        </div>
+
+                        <div class="form-floating mb-4">
+                            <input asp-for="Input.ConfirmPassword" class="form-control border-0 bg-light" autocomplete="new-password" aria-required="true" placeholder="potvrda lozinke" />
+                            <label asp-for="Input.ConfirmPassword" class="text-muted small">Potvrdite lozinku</label>
+                            <span asp-validation-for="Input.ConfirmPassword" class="text-danger small"></span>
+                        </div>
+
+                        <button id="registerSubmit" type="submit" class="w-100 btn btn-success btn-lg rounded-pill fw-bold shadow-sm py-3 mb-4">
+                            REGISTRUJ SE
+                        </button>
+
+                        <div class="text-center pt-2">
+                            <p class="small text-muted mb-1">Već imate nalog?</p>
+                            <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl" class="text-success fw-bold text-decoration-none">
+                                Prijavite se ovde
+                            </a>
+                        </div>
+                    </form>
+
+                    @if ((Model.ExternalLogins?.Count ?? 0) > 0)
+                    {
+                        <div class="position-relative my-4">
+                            <hr class="text-muted">
+                            <span class="position-absolute top-50 start-50 translate-middle bg-white px-3 small text-muted">ili se registrujte preko</span>
+                        </div>
+
+                        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                            <div class="d-grid gap-2">
+                                @foreach (var provider in Model.ExternalLogins!)
+                                {
+                                    <button type="submit" class="btn btn-outline-dark rounded-pill py-2 small fw-bold" name="provider" value="@provider.Name" title="Register using your @provider.DisplayName account">
+                                        @provider.DisplayName
+                                    </button>
+                                }
+                            </div>
+                        </form>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .form-control:focus {
+        background-color: #fff !important;
+        box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.15) !important; 
+        border: 1px solid #198754 !important;
+    }
+
+    .form-floating > .form-control {
+        border: 1px solid transparent;
+    }
+
+    .card {
+        transition: transform 0.3s ease;
+    }
+</style>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

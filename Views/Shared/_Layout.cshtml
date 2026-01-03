@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - UrosPetrusovic</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/UrosPetrusovic.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg custom-navbar">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <span class="brand-highlight">Internal</span> Catalog Ordering System
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Početna</a></li>
+                        @if (User.IsInRole("ADMIN"))
+                {
+                        <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Admin">Admin</a></li>
+                }
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Index", "Home")#contact">Kontakt</a>
+                        </li>
+                        @if (User.IsInRole("USER"))
+                {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark position-relative d-inline-flex align-items-center" asp-controller="Orders" asp-action="Cart">
+                                <span style="font-size: 1.2rem;"><i class="bi bi-basket2-fill"></i></span>
+
+                                @using Microsoft.AspNetCore.Http
+                                @inject IHttpContextAccessor HttpContextAccessor
+                                @{
+                                    var sessionData = HttpContextAccessor.HttpContext.Session.GetString("Cart");
+                                    var cartCount = 0;
+                                    if (!string.IsNullOrEmpty(sessionData))
+                                    {
+                                        var cart = Newtonsoft.Json.JsonConvert.DeserializeObject<List<UrosPetrusovic.Controllers.CartItem>>(sessionData);
+                                        cartCount = cart.Sum(x => x.Quantity);
+                                    }
+                                }
+
+                                @if (cartCount > 0)
+                                {
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                          style="font-size: 0.65rem; padding: 0.35em 0.5em; margin-left: -5px; margin-top: 5px;">
+                                        @cartCount
+                                        <span class="visually-hidden">artikala u korpi</span>
+                                    </span>
+                                }
+                            </a>
+                        </li>
+                }
+
+                    </ul>
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div>
+        <main role="main">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="custom-footer">
+        <div class="container footer-content">
+            <div class="footer-left">
+                &copy; 2026 Internal Catalog Ordering System
+            </div>
+            <div class="footer-right">
+                support@icos.com
+            </div>
+            <div class="footer-center">
+                <a asp-area="" asp-controller="Home" asp-action="Index">Početna</a>
+                <a asp-area="" asp-controller="Items" asp-action="Index">Proizvodi</a>
+                @if (User.IsInRole("ADMIN"))
+                {
+                    <a asp-area="" asp-controller="Home" asp-action="Admin">Admin panel</a>
+
+                }
+                @if (User.IsInRole("USER"))
+                {
+                    <a asp-area="" asp-controller="Orders" asp-action="MyOrders">Moje porudžbine</a>
+
+                }
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

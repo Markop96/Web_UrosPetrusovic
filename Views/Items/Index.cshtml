@@ -1,0 +1,159 @@
+﻿@model IEnumerable<UrosPetrusovic.Models.Item>
+
+@{
+    ViewData["Title"] = "Katalog Proizvoda";
+    var catalogs = ViewBag.Catalogs as IEnumerable<UrosPetrusovic.Models.Catalog>;
+}
+
+<div class="container custom-margin">
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        @if(User.IsInRole("ADMIN")){
+        <a asp-action="Create" class="btn btn-primary btn-lg shadow-sm">+ Dodaj Artikal</a>
+        }
+    </div>
+
+    <div class="mb-5">
+        <ul class="nav nav-pills justify-content-center gap-2" id="catalogFilters">
+            <li class="nav-item">
+                <button class="nav-link active rounded-pill px-4 shadow-sm" data-filter="all">Svi katalozi</button>
+            </li>
+            @if (catalogs != null)
+            {
+                foreach (var cat in catalogs)
+                {
+                            <li class="nav-item">
+                                <button class="nav-link rounded-pill px-4 shadow-sm" data-filter="cat-@cat.Id">@cat.Name</button>
+                            </li>
+                }
+            }
+        </ul>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4" id="itemsGrid">
+        @foreach (var item in Model)
+        {
+                <div class="col item-card" data-category="cat-@item.CatalogId">
+                    <div class="card h-100 shadow-sm border-0 transition-hover">
+                    @if (item.Slika != null)
+                    {
+                                <img src="data:image/png;base64,@Convert.ToBase64String(item.Slika)"
+                                     class="card-img-top" alt="@item.Name" style="height: 200px; object-fit: contain;">
+                    }
+                    else
+                    {
+                                <div class="bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                                    <i class="text-muted">Nema slike</i>
+                                </div>
+                    }
+                        <div class="card-body text-center">
+                            <h5 class="card-title fw-bold">@item.Name</h5>
+                            <p class="text-muted mb-1 small">@item.ManufacturerPartNumber</p>
+                            <h4 class="text-primary mb-3">@item.Price.ToString("N2") RSD</h4>
+
+                            <div class="d-grid gap-2">
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-dark">
+                                    Detalji
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-white border-0 text-center pb-3">
+                            <span class="badge bg-light text-dark border">@item.Catalog?.Name</span>
+                        </div>
+                    </div>
+                </div>
+        }
+    </div>
+    <div id="noItemsMessage" class="text-center py-5" style="display: none;">
+        <div class="mb-3">
+            <i class="bi bi-box-seam text-muted" style="font-size: 4rem;"></i>
+        </div>
+        <h3 class="text-muted">Trenutno nema proizvoda u izabranom katalogu.</h3>
+        <p class="text-secondary">Pokušajte odabrati drugu kategoriju ili dodajte novi artikal.</p>
+    </div>
+</div>
+
+<style>
+    .custom-margin {
+        padding-bottom: 100px;
+    }
+
+    .nav-pills .nav-link {
+        background-color: #f8f9fa;
+        color: #333;
+        border: 1px solid #dee2e6;
+        transition: all 0.3s ease;
+    }
+
+    .nav-pills .nav-link.active {
+        background-color: #ffaa00 !important; 
+        color: white !important;
+        border-color: #ffaa00;
+    }
+
+    .transition-hover:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+    }
+
+    .item-card {
+        transition: all 0.4s ease-in-out;
+    }
+</style>
+
+@section Scripts {
+        <script>
+            document.querySelectorAll('#catalogFilters .nav-link').forEach(button => {
+                button.addEventListener('click', function() {
+                    document.querySelectorAll('#catalogFilters .nav-link').forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+
+                    const filterValue = this.getAttribute('data-filter');
+                    const items = document.querySelectorAll('.item-card');
+
+                    items.forEach(item => {
+                        if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                            item.style.display = 'block';
+                            setTimeout(() => { item.style.opacity = '1'; item.style.transform = 'scale(1)'; }, 10);
+                        } else {
+                            item.style.opacity = '0';
+                            item.style.transform = 'scale(0.8)';
+                            setTimeout(() => { item.style.display = 'none'; }, 400);
+                        }
+                    });
+                });
+            });
+
+            document.querySelectorAll('#catalogFilters .nav-link').forEach(button => {
+                button.addEventListener('click', function() {
+                    document.querySelectorAll('#catalogFilters .nav-link').forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+
+                    const filterValue = this.getAttribute('data-filter');
+                    const items = document.querySelectorAll('.item-card');
+                    const noItemsMessage = document.getElementById('noItemsMessage');
+                    let hasVisibleItems = false;
+
+                    items.forEach(item => {
+                        if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                            item.style.display = 'block';
+                            item.style.opacity = '1';
+                            item.style.transform = 'scale(1)';
+                            hasVisibleItems = true; 
+                        } else {
+                            item.style.opacity = '0';
+                            item.style.transform = 'scale(0.8)';
+                            item.style.display = 'none';
+                        }
+                    });
+
+                    if (hasVisibleItems) {
+                        noItemsMessage.style.display = 'none';
+                    } else {
+                        noItemsMessage.style.display = 'block';
+                        noItemsMessage.style.opacity = '0';
+                        setTimeout(() => { noItemsMessage.style.opacity = '1'; }, 50);
+                    }
+                });
+            });
+        </script>
+}

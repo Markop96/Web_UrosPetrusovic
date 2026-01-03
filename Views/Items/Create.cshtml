@@ -1,0 +1,134 @@
+﻿@model UrosPetrusovic.Models.Item
+
+@{
+    ViewData["Title"] = "Novi Artikal";
+}
+
+<div class="container custom-margin">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+                <div class="card-header bg-primary py-4 text-center">
+                    <h2 class="text-white fw-bold mb-0">Dodaj Novi Artikal</h2>
+                    <p class="text-white-50 small">Popunite detalje o proizvodu ispod</p>
+                </div>
+
+                <div class="card-body p-4 p-md-5">
+                    <form asp-action="Create" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-4"></div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input asp-for="Name" class="form-control border-0 bg-light" placeholder="Naziv" />
+                                    <label asp-for="Name">Naziv artikla</label>
+                                    <span asp-validation-for="Name" class="text-danger small"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input asp-for="ManufacturerPartNumber" class="form-control border-0 bg-light" placeholder="MPN" />
+                                    <label asp-for="ManufacturerPartNumber">MPN (Kataloški broj)</label>
+                                    <span asp-validation-for="ManufacturerPartNumber" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input asp-for="Price" class="form-control border-0 bg-light" type="number" step="0.01" placeholder="0.00" />
+                                    <label asp-for="Price">Cena (RSD)</label>
+                                    <span asp-validation-for="Price" class="text-danger small"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input asp-for="LeadTime" class="form-control border-0 bg-light" placeholder="7" />
+                                    <label asp-for="LeadTime">Lead Time (dani)</label>
+                                    <span asp-validation-for="LeadTime" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="SupplierId" class="form-label fw-bold text-muted small">Dobavljač</label>
+                                    <select asp-for="SupplierId" class="form-select border-0 bg-light py-3" asp-items="ViewBag.SupplierId">
+                                        <option value="">-- Odaberi dobavljača --</option>
+                                    </select>
+                                    <span asp-validation-for="SupplierId" class="text-danger small"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="CatalogId" class="form-label fw-bold text-muted small">Katalog</label>
+                                    <select asp-for="CatalogId" class="form-select border-0 bg-light py-3" asp-items="ViewBag.CatalogId">
+                                        <option value="">-- Odaberi katalog --</option>
+                                    </select>
+                                    <span asp-validation-for="CatalogId" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label asp-for="SlikaFile" class="form-label fw-bold text-muted small">Fotografija proizvoda</label>
+                                    <div class="input-group">
+                                        <input asp-for="SlikaFile" type="file" class="form-control border-0 bg-light py-3" accept="image/*" />
+                                    </div>
+                                    <span asp-validation-for="SlikaFile" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="mb-4">
+                                    <label asp-for="Description" class="form-label fw-bold text-muted small">Opis proizvoda</label>
+                                    <textarea asp-for="Description" class="form-control border-0 bg-light" rows="5" placeholder="Unesite detaljan opis proizvoda..."></textarea>
+                                    <span asp-validation-for="Description" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4 opacity-25">
+
+                        <div class="d-flex gap-3 mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg px-5 shadow-sm rounded-pill">
+                                <i class="bi bi-save"></i> Sačuvaj artikal
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary btn-lg px-4 rounded-pill">
+                                Odustani
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .custom-margin {
+        padding-top: 150px;
+        padding-bottom: 100px;
+    }
+
+    /* Stil za textarea da se ponaša isto kao i ostali inputi na fokus */
+    .form-control:focus, textarea:focus {
+        box-shadow: none;
+        background-color: #fff !important;
+        border: 1px solid #0d6efd !important;
+    }
+
+    .form-floating > .form-control:focus {
+        box-shadow: none;
+        background-color: #fff !important;
+        border: 1px solid #0d6efd !important;
+    }
+
+    .form-select:focus {
+        box-shadow: none;
+        background-color: #fff !important;
+        border: 1px solid #0d6efd !important;
+    }
+
+    .card {
+        transition: all 0.3s ease;
+    }
+</style>

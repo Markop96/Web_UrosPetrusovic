@@ -1,0 +1,96 @@
+﻿@model UrosPetrusovic.Models.Catalog
+
+@{
+    ViewData["Title"] = "Izmeni katalog";
+}
+
+<div class="container mt-5 pt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+                <div class="card-header bg-dark py-3 px-4">
+                    <h4 class="text-white mb-0 fw-bold">
+                        <i class="bi bi-journal-text me-2 text-warning"></i>Izmena Kataloga
+                    </h4>
+                </div>
+
+                <div class="card-body p-4 p-md-5">
+                    <form asp-action="Edit" method="post">
+                        <input type="hidden" asp-for="Id" />
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="form-floating mb-4">
+                            <input asp-for="Name" class="form-control border-0 bg-light rounded-3" placeholder="Naziv kataloga" />
+                            <label asp-for="Name">Naziv kataloga</label>
+                            <span asp-validation-for="Name" class="text-danger small"></span>
+                        </div>
+
+                        <div class="form-floating mb-4">
+                            <textarea asp-for="Description" class="form-control border-0 bg-light rounded-3" placeholder="Opis kataloga" style="height: 120px"></textarea>
+                            <label asp-for="Description">Kratak opis sadržaja</label>
+                            <span asp-validation-for="Description" class="text-danger small"></span>
+                        </div>
+
+                        <div class="form-floating mb-4">
+                            <input asp-for="ValidUntil" type="date" class="form-control border-0 bg-light rounded-3" placeholder="Važi do" />
+                            <label asp-for="ValidUntil">Datum isteka (opciono)</label>
+                            <span asp-validation-for="ValidUntil" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4 fw-bold me-md-2">
+                                Odustani
+                            </a>
+                            <button type="submit" class="btn btn-warning text-dark rounded-pill px-5 fw-bold shadow-sm">
+                                Sačuvaj izmene
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card-footer bg-light py-3 border-0 text-center">
+                    <small class="text-muted">
+                        Poslednja izmena kataloga: <strong>@DateTime.Now.ToString("dd.MM.yyyy")</strong>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .form-floating > .form-control:focus {
+        background-color: #fff !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        border: 1px solid #ffaa00 !important;
+    }
+
+    .card {
+        animation: fadeInScale 0.4s ease-out;
+    }
+
+    @@keyframes fadeInScale {
+        from { opacity: 0; transform: scale(0.98); }
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    .btn-warning {
+        background-color: #ffaa00;
+        border: none;
+        transition: all 0.3s;
+    }
+
+    .btn-warning:hover {
+        background-color: #e69900;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(255, 170, 0, 0.3);
+    }
+</style>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,108 @@
+﻿@model IEnumerable<UrosPetrusovic.Models.Catalog>
+
+@{
+    ViewData["Title"] = "Katalozi";
+}
+
+<div class="container mt-5 pt-5">
+    <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+        <div class="card-header bg-dark py-3 d-flex justify-content-between align-items-center px-4">
+            <h3 class="text-white mb-0 fw-bold">📚 Upravljanje Katalozima</h3>
+            <a class="btn btn-warning fw-bold rounded-pill px-4 shadow-sm" asp-action="Create">
+                <i class="bi bi-journal-plus me-2"></i>Novi katalog
+            </a>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0 align-middle">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="ps-4 py-3 text-uppercase small fw-bold text-secondary">Naziv kataloga</th>
+                            <th class="py-3 text-uppercase small fw-bold text-secondary">Opis</th>
+                            <th class="py-3 text-uppercase small fw-bold text-secondary">Važi do</th>
+                            <th class="pe-4 py-3 text-uppercase small fw-bold text-secondary text-end">Akcije</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var catalog in Model)
+                        {
+                            <tr class="transition-hover">
+                                <td class="ps-4 py-3 fw-bold text-dark">
+                                    <div class="d-flex align-items-center">
+                                        <div class="rounded-3 bg-light d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                            <i class="bi bi-book text-warning"></i>
+                                        </div>
+                                        @catalog.Name
+                                    </div>
+                                </td>
+                                <td class="py-3 text-muted">
+                                    <small>@(catalog.Description.Length > 50 ? catalog.Description.Substring(0, 47) + "..." : catalog.Description)</small>
+                                </td>
+                                <td class="py-3">
+                                    @if (catalog.ValidUntil.HasValue)
+                                    {
+                                        <span class="badge @(catalog.ValidUntil.Value < DateTime.Now ? "bg-danger-subtle text-danger" : "bg-success-subtle text-success") rounded-pill px-3">
+                                            <i class="bi bi-calendar3 me-1"></i>
+                                            @catalog.ValidUntil.Value.ToString("dd.MM.yyyy")
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted small">- bez roka -</span>
+                                    }
+                                </td>
+                                <td class="pe-4 py-3 text-end">
+                                    <div class="btn-group shadow-sm rounded-pill overflow-hidden border">
+                                        <a class="btn btn-white border-end px-3" asp-action="Edit" asp-route-id="@catalog.Id" title="Izmeni">
+                                            <i class="bi bi-pencil-square text-warning"></i>
+                                        </a>
+                                        <a class="btn btn-white px-3" asp-action="Delete" asp-route-id="@catalog.Id" title="Obriši">
+                                            <i class="bi bi-trash3-fill text-danger"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer bg-white py-3 border-0 text-center">
+            <small class="text-muted text-uppercase fw-bold" style="letter-spacing: 1px;">Aktivno kataloga: @Model.Count()</small>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: rgba(0,0,0,0.02);
+        transition: all 0.2s ease-in-out;
+    }
+
+    .bg-success-subtle { background-color: #d1e7dd; }
+    .bg-danger-subtle { background-color: #f8d7da; }
+
+    .btn-white {
+        background-color: #fff;
+        transition: all 0.2s;
+        border: none;
+    }
+
+    .btn-white:hover {
+        background-color: #f8f9fa;
+        transform: scale(1.1);
+    }
+
+    .card {
+        animation: fadeIn 0.5s ease-out;
+    }
+
+    @@keyframes fadeIn {
+        from { opacity: 0; transform: translateY(15px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>

@@ -1,0 +1,64 @@
+﻿<div class="container mt-5 pt-5">
+    <h2 class="fw-bold mb-4 text-center">⚙️ Admin Kontrolna Tabla</h2>
+
+    <div class="row g-4 justify-content-center">
+        <div class="col-md-3">
+            <div class="card h-100 shadow-sm border-0 rounded-4 text-center p-3 transition-hover">
+                <div class="card-body">
+                    <div class="display-4 mb-3 text-primary">📦</div>
+                    <h5 class="card-title fw-bold">Porudžbine</h5>
+                    <p class="card-text text-muted small">Pregled, promena statusa i detalji svih porudžbina.</p>
+                    <a asp-controller="Orders" asp-action="AdminIndex" class="btn btn-primary w-100 rounded-pill">Otvori</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card h-100 shadow-sm border-0 rounded-4 text-center p-3 transition-hover">
+                <div class="card-body">
+                    <div class="display-4 mb-3 text-success">🏭</div>
+                    <h5 class="card-title fw-bold">Dobavljači</h5>
+                    <p class="card-text text-muted small">Upravljanje listom partnera i njihovim podacima.</p>
+                    <a asp-controller="Supplier" asp-action="Index" class="btn btn-success w-100 rounded-pill">Otvori</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card h-100 shadow-sm border-0 rounded-4 text-center p-3 transition-hover">
+                <div class="card-body">
+                    <div class="display-4 mb-3 text-warning">📚</div>
+                    <h5 class="card-title fw-bold">Katalozi</h5>
+                    <p class="card-text text-muted small">Organizacija kategorija i kataloga artikala.</p>
+                    <a asp-controller="Catalog" asp-action="Index" class="btn btn-warning text-white w-100 rounded-pill">Otvori</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card h-100 shadow-sm border-0 rounded-4 text-center p-3 transition-hover">
+                <div class="card-body">
+                    <div class="display-4 mb-3 text-info">🛒</div>
+                    <h5 class="card-title fw-bold">Artikli</h5>
+                    <p class="card-text text-muted small">Upravljanje proizvodima, cenama i zalihama.</p>
+                    <a asp-controller="Items" asp-action="Index" class="btn btn-info text-white w-100 rounded-pill">Otvori</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .transition-hover {
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+        .transition-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+        }
+    .btn-info {
+        background-color: #0dcaf0;
+        border: none;
+    }
+</style>

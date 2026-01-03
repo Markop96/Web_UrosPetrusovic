@@ -1,0 +1,82 @@
+﻿@model UrosPetrusovic.Models.Supplier
+
+@{
+    ViewData["Title"] = "Obriši dobavljača";
+}
+
+<div class="container mt-5 pt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+                <div class="card-body p-5 text-center">
+                    <div class="display-1 text-danger mb-4">
+                        <i class="bi bi-exclamation-octagon"></i>
+                    </div>
+
+                    <h3 class="fw-bold text-dark mb-3">Potvrda brisanja</h3>
+
+                    <p class="text-muted mb-4">
+                        Da li ste sigurni da želite trajno da uklonite dobavljača <br />
+                        <span class="badge bg-light text-danger fs-6 mt-2 py-2 px-3 border">@Model.Name</span>
+                    </p>
+
+                    <div class="alert alert-warning border-0 small rounded-3 mb-4">
+                        <i class="bi bi-info-circle me-2"></i>Ova akcija se ne može poništiti.
+                    </div>
+
+                    <form asp-action="Delete" method="post">
+                        <input type="hidden" asp-for="Id" />
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-danger rounded-pill py-3 fw-bold shadow-sm">
+                                <i class="bi bi-trash3 me-2"></i>Da, obriši trajno
+                            </button>
+                            <a asp-action="Index" class="btn btn-link text-decoration-none text-secondary fw-bold mt-2">
+                                Odustani i vrati se
+                            </a>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card-footer bg-danger py-1 border-0"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .card {
+        animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+    }
+
+    @@keyframes shake {
+        0%, 100% { transform: translateY(0); }
+        25% { transform: translateY(-5px); }
+        50% { transform: translateY(0); }
+        75% { transform: translateY(-2px); }
+    }
+
+    .btn-danger {
+        transition: all 0.3s ease;
+    }
+
+    .btn-danger:hover {
+        background-color: #bb2d3b;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 15px rgba(220, 53, 69, 0.3);
+    }
+
+    .bi-exclamation-octagon {
+        animation: pulse 2s infinite;
+    }
+
+    @@keyframes pulse {
+        0% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.1); opacity: 0.8; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+</style>

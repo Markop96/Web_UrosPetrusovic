@@ -1,0 +1,86 @@
+﻿@model UrosPetrusovic.Models.Item
+
+@{
+    ViewData["Title"] = "Izmena artikla";
+}
+
+<div class="container mt-5 pt-5 pb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white p-4">
+                    <h2 class="mb-0">Izmeni artikal: @Model.Name</h2>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Edit" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="Slika" />
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Name" class="form-label fw-bold">Naziv</label>
+                                <input asp-for="Name" class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="ManufacturerPartNumber" class="form-label fw-bold">MPN</label>
+                                <input asp-for="ManufacturerPartNumber" class="form-control" />
+                                <span asp-validation-for="ManufacturerPartNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Price" class="form-label fw-bold">Cena (RSD)</label>
+                                <input asp-for="Price" class="form-control" type="number" step="0.01" />
+                                <span asp-validation-for="Price" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="LeadTime" class="form-label fw-bold">Lead Time (dana)</label>
+                                <input asp-for="LeadTime" class="form-control" />
+                                <span asp-validation-for="LeadTime" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="SupplierId" class="form-label fw-bold">Dobavljač</label>
+                                <select asp-for="SupplierId" class="form-select" asp-items="ViewBag.SupplierId"></select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="CatalogId" class="form-label fw-bold">Katalog</label>
+                                <select asp-for="CatalogId" class="form-select" asp-items="ViewBag.CatalogId"></select>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Trenutna slika</label>
+                            <div class="mb-2">
+                                @if (Model.Slika != null)
+                                {
+                                    <img src="data:image/png;base64,@Convert.ToBase64String(Model.Slika)"
+                                         style="height: 120px; border-radius: 8px; border: 1px solid #ddd;" />
+                                }
+                            </div>
+                            <label asp-for="SlikaFile" class="form-label fw-bold">Promeni sliku (ostavi prazno ako ne menjaš)</label>
+                            <input asp-for="SlikaFile" type="file" class="form-control" accept="image/*" />
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Description" class="form-label fw-bold">Opis proizvoda</label>
+                            <textarea asp-for="Description" class="form-control" rows="5" placeholder="Unesite ili izmenite opis proizvoda...">@Model.Description</textarea>
+                            <span asp-validation-for="Description" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-flex gap-2 pt-3">
+                            <button type="submit" class="btn btn-success px-5 shadow-sm">Sačuvaj izmene</button>
+                            <a asp-action="Index" class="btn btn-outline-secondary px-5">Odustani</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,209 @@
+﻿html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+    padding-top: 100px !important;
+}
+
+
+html, body {
+    width: 100vw;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+.custom-navbar {
+    background-color: #ffaa00;
+    padding: 0.8rem 1rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    position: fixed;
+    top:0;
+    width:100% !important;
+    z-index:9999;
+}
+
+    .custom-navbar .navbar-brand {
+        font-weight: 700;
+        color: #fff;
+        font-size: 1.3rem;
+    }
+
+    .custom-navbar .brand-highlight {
+        color: #292929;
+    }
+
+    .custom-navbar .nav-link {
+        color: #fff;
+        margin-left: 1rem;
+        font-weight: bold;
+        transition: color 0.3s;
+    }
+
+        .custom-navbar .nav-link:hover {
+            color: #0051de;
+            text-decoration: underline;
+        }
+
+    .custom-navbar .navbar-toggler {
+        border-color: #fff;
+    }
+
+    .custom-navbar .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%28255, 255, 255, 1%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+    }
+
+main {
+    min-height: calc(100vh - 250px);
+}
+
+.custom-footer {
+    background-color: #212529;
+    color: #ccc;
+    padding: 2rem 0;
+    font-size: 0.9rem;
+    width: 100%;
+    margin-top: 100px; 
+    clear: both;
+}
+
+    .custom-footer a {
+        color: #ffc107;
+        margin: 0 0.5rem;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+        .custom-footer a:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+.footer-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-left, .footer-center, .footer-right {
+    margin: 0.5rem 0;
+}
+
+
+.hero-section {
+    background-image: url("/img/herosection.png");
+    background-position:bottom;
+    background-size:cover;
+    background-repeat:no-repeat;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-top:-100px !important;
+}
+
+    .hero-section h1 {
+        font-size: 2.2rem;
+        font-weight: 900;
+        text-transform:uppercase;
+    }
+
+    .hero-section p {
+        font-size: 1.19rem;
+        text-transform: lowercase;
+        font-style:italic;
+    }
+
+.hero-buttons .btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 1.1rem;
+}
+
+.services-section h2 {
+    font-weight: 700;
+}
+
+.service-card {
+    border-radius: 10px;
+    background-color: #fff;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+    .service-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    }
+
+
+.open-positions-section {
+    background-color: #ffaa00;
+}
+
+.position-card {
+    position: relative; 
+    border-radius: 10px;
+    background-color: black;
+    transition: transform 0.3s, box-shadow 0.3s;
+    color: white;
+    padding: 1.5rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+    .position-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    }
+
+    .position-card .btn {
+        right: 1rem;
+    }
+
+        .position-card .btn i {
+        color:white;
+        font-size:25px;
+        }
+
+        .position-card .btn i:hover {
+            color: white;
+            font-size: 30px;
+        }
+
+    .position-card h5 {
+         
+    }
+
+.contact-section {
+background-color:white !important;
+}
+
+.contact-section h2 {
+    font-weight: 700;
+}
+
+.contact-section form .btn {
+    width: 100%;
+}
+
+.contact-section1{
+padding:100px 0 !important;
+}

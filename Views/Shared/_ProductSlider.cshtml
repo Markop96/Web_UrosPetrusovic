@@ -1,0 +1,125 @@
+﻿@model IEnumerable<UrosPetrusovic.Models.Item>
+
+@if (Model != null && Model.Any())
+{
+    <div class="slider-wrapper-infinite">
+        <div class="slider-track">
+            @foreach (var item in Model)
+            {
+                <a asp-controller="Items" asp-action="Details" asp-route-id="@item.Id" class="item-card-mini shadow-sm text-decoration-none">
+                    @if (item.Slika != null)
+                    {
+                        <img src="data:image/png;base64,@Convert.ToBase64String(item.Slika)" alt="@item.Name">
+                    }
+                    <div class="item-info-mini">
+                        <h6 class="text-dark mb-1">@item.Name</h6>
+                        <span class="text-primary fw-bold price">@item.Price.ToString("N0") RSD</span>
+                    </div>
+                </a>
+            }
+
+            @foreach (var item in Model)
+            {
+                <a asp-controller="Items" asp-action="Details" asp-route-id="@item.Id" class="item-card-mini shadow-sm text-decoration-none">
+                    @if (item.Slika != null)
+                    {
+                        <img src="data:image/png;base64,@Convert.ToBase64String(item.Slika)" alt="@item.Name">
+                    }
+                    <div class="item-info-mini">
+                        <h6 class="text-dark mb-1">@item.Name</h6>
+                        <span class="text-primary fw-bold price">@item.Price.ToString("N0") RSD</span>
+                    </div>
+                </a>
+            }
+        </div>
+    </div>
+}
+
+<style>
+    .slider-wrapper-infinite {
+        width: 100%;
+        overflow: hidden;
+        padding: 60px 0;
+        background: transparent;
+        position: relative;
+    }
+
+        .slider-wrapper-infinite .price {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+    
+    .slider-track {
+        display: flex;
+        width: calc((250px + 30px) * @(Model.Count() * 2));
+        animation: scrollInfinite 15s linear infinite;
+        position:relative;
+    }
+
+    .slider-track:hover {
+        animation-play-state: paused; 
+    }
+
+    .item-card-mini {
+        position: relative; /* KLJUČNO */
+        width: 250px;
+        height: 350px;
+        background: white;
+        margin: 0 15px;
+        border-radius: 20px;
+        overflow: hidden;
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        transition: all 0.3s ease;
+        border: 1px solid #eee;
+    }
+
+
+    .item-card-mini:hover {
+        transform: scale(1.05);
+        border-color: #ffaa00; 
+    }
+
+    .item-card-mini img {
+        width: 100%;
+        height: 180px;
+        object-fit: contain;
+    }
+
+    .item-info-mini {
+        padding: 15px;
+        text-align: center;
+    }
+
+    @@keyframes scrollInfinite {
+        0% {
+            transform: translateX(0);
+        }
+        100% {
+     
+            transform: translateX(calc(-280px * @Model.Count()));
+        }
+    }
+
+    .slider-wrapper-infinite::before,
+    .slider-wrapper-infinite::after {
+        content: "";
+        height: 100%;
+        position: absolute;
+        width: 100px;
+        z-index: 2;
+        pointer-events: none;
+    }
+    .slider-wrapper-infinite::before {
+        left: 0; top: 0;
+        background: linear-gradient(to right, white, transparent);
+    }
+    .slider-wrapper-infinite::after {
+        right: 0; top: 0;
+        background: linear-gradient(to left, white, transparent);
+    }
+</style>

@@ -1,0 +1,63 @@
+﻿@page
+@model AccessDeniedModel
+@{
+    ViewData["Title"] = "Pristup odbijen";
+}
+
+<div class="container" style="padding-top: 50px; padding-bottom: 100px;">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+                <div class="card-header bg-danger py-3 border-0"></div>
+
+                <div class="card-body p-5">
+
+                    <div class="mb-4">
+                        <i class="bi bi-shield-lock-fill text-danger" style="font-size: 5rem;"></i>
+                    </div>
+
+                    <h2 class="fw-bold text-dark mb-3">Pristup nije dozvoljen</h2>
+
+                    <div class="mb-4">
+                        <p class="text-muted fs-5">
+                            Nažalost, nemate potrebne privilegije za pregled ove stranice.
+                        </p>
+                        <p class="small text-secondary">
+                            Ako smatrate da je ovo greška, kontaktirajte administratora ili se prijavite sa drugim nalogom.
+                        </p>
+                    </div>
+
+                    <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+                        <a href="/" class="btn btn-outline-dark btn-lg rounded-pill px-4 fw-bold">
+                            Vrati se na početnu
+                        </a>
+                        <a asp-page="./Login" class="btn btn-danger btn-lg rounded-pill px-4 fw-bold shadow-sm">
+                            Prijavi se ponovo
+                        </a>
+                    </div>
+                </div>
+
+                <div class="card-footer bg-light border-0 py-3">
+                    <small class="text-muted">Greška 403: Forbidden</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .bi-shield-lock-fill {
+        display: inline-block;
+        animation: pulse-red 2s infinite;
+    }
+
+    @@keyframes pulse-red {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+</style>
